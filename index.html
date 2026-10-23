@@ -3,136 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Web Recife | Landing Pages Mobile de Alta Conversão</title>
-    <meta name="description" content="Desenvolvimento profissional de páginas mobile e automação de agendamentos para negócios locais em Recife - PE.">
+    <title>Vitor Web Studio | Desenvolvimento de Landing Pages & Alta Conversão</title>
+    <meta name="description" content="Estúdio especializado na criação de páginas mobile de alta performance, arquitetura moderna na nuvem e automação para negócios. Fundado por João Vitor.">
+    <meta property="og:title" content="Vitor Web Studio | Creative Tech & Web Development">
+    <meta property="og:description" content="Páginas ultrarrápidas, design moderno e conversão direta para o WhatsApp.">
+    <meta property="og:type" content="website">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Three.js & GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
-        @keyframes floatMesh {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-            50% { transform: translate(30px, -20px) scale(1.1); opacity: 0.85; }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#05070d',
+                            900: '#0a0e1a',
+                            800: '#12182b',
+                            700: '#1e2640'
+                        },
+                        brand: {
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            purple: '#8b5cf6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace']
+                    }
+                }
+            }
         }
-        .mesh-1 { animation: floatMesh 10s infinite alternate ease-in-out; }
+    </script>
+
+    <style>
+        body {
+            background-color: #05070d;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        #canvas3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.85;
+        }
+
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(18, 24, 43, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.15);
+        }
+
+        .glow-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glow-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .glow-btn:hover {
+            box-shadow: 0 0 35px rgba(16, 185, 129, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-white relative overflow-x-hidden min-h-screen flex flex-col justify-between">
+<body class="selection:bg-emerald-500 selection:text-black">
 
-    <!-- Glowing Background Meshes -->
-    <div class="absolute -top-40 -left-40 w-[35rem] h-[35rem] bg-indigo-600/20 rounded-full blur-3xl pointer-events-none mesh-1"></div>
-    <div class="absolute top-96 -right-40 w-[35rem] h-[35rem] bg-emerald-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Three.js Interactive 3D Canvas -->
+    <canvas id="canvas3d"></canvas>
 
-    <!-- Header -->
-    <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-xl sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-indigo-600 text-white flex items-center justify-center text-lg font-bold shadow-lg shadow-emerald-500/20">
-                    <i class="fa-solid fa-bolt"></i>
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3.5 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xl font-black shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition duration-300">
+                    <i class="fa-solid fa-cube"></i>
                 </div>
                 <div>
-                    <span class="text-base font-extrabold text-white font-heading tracking-tight block">Studio Web Recife</span>
-                    <span class="text-[11px] text-slate-400">Páginas Mobile & Integrações WhatsApp</span>
+                    <span class="text-xl font-black tracking-tight font-heading block text-white">Vitor Web Studio</span>
+                    <span class="text-[11px] font-mono text-emerald-400 tracking-wider uppercase block">Creative Tech & Dev</span>
                 </div>
-            </div>
-            <a href="https://wa.me/5581985221100?text=Ol%C3%A1!%20Gostaria%20de%20criar%20uma%20p%C3%A1gina%20mobile%20para%20minha%20empresa%20em%20Recife." target="_blank" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 transition">
-                <i class="fa-brands fa-whatsapp text-sm"></i>
-                <span>Falar com João Vitor</span>
             </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#solucoes" class="hover:text-emerald-400 transition">Soluções</a>
+                <a href="#portfolio" class="hover:text-emerald-400 transition">Portfólio</a>
+                <a href="#diferenciais" class="hover:text-emerald-400 transition">Diferenciais</a>
+                <a href="#faq" class="hover:text-emerald-400 transition">Dúvidas</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/19709963816?text=Ol%C3%A1%20Jo%C3%A3o%20Vitor!%20Vim%20pelo%20site%20da%20Vitor%20Web%20Studio%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" class="glow-btn px-5 py-2.5 rounded-xl text-white text-xs sm:text-sm font-bold flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                    <span>Falar no WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with 3D Focus -->
+    <header class="relative pt-36 pb-20 md:pt-48 md:pb-32 px-4 max-w-7xl mx-auto z-10 text-center flex flex-col items-center">
+        <!-- Live Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full badge-live text-xs font-mono text-emerald-400 mb-8 animate-fade-in">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>Estúdio de Desenvolvimento Web & Alta Conversão</span>
+        </div>
+
+        <!-- Hero Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black font-heading text-white tracking-tight leading-[1.1] max-w-4xl mb-8">
+            Páginas Mobile & Aplicações Modernas que <span class="glow-gradient">Multiplicam Vendas</span>
+        </h1>
+
+        <p class="text-slate-300 text-base sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+            Arquitetura em nuvem ultrarrápida, design mobile-first e integração direta com o WhatsApp. Entregamos seu projeto completo em 24h a 48h sem taxas abusivas de hospedagem.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <a href="https://wa.me/19709963816?text=Ol%C3%A1%20Jo%C3%A3o%20Vitor!%20Quero%20iniciar%20meu%20projeto%20com%20a%20Vitor%20Web%20Studio." target="_blank" class="w-full sm:w-auto glow-btn px-8 py-4 rounded-xl text-white text-base font-bold flex items-center justify-center gap-3">
+                <i class="fa-solid fa-rocket"></i>
+                <span>Solicitar Demonstração</span>
+            </a>
+            <a href="#portfolio" class="w-full sm:w-auto glass-panel hover:bg-white/10 px-8 py-4 rounded-xl text-slate-200 text-base font-semibold transition flex items-center justify-center gap-2 border border-white/10">
+                <i class="fa-solid fa-layer-group text-emerald-400"></i>
+                <span>Ver Demonstrações</span>
+            </a>
+        </div>
+
+        <!-- Metrics Banner -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 w-full max-w-4xl">
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <div class="text-3xl font-black font-heading text-emerald-400 mb-1">100/100</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-mono">Google PageSpeed</div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <div class="text-3xl font-black font-heading text-cyan-400 mb-1">&lt;0.8s</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-mono">Tempo de Carga</div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <div class="text-3xl font-black font-heading text-indigo-400 mb-1">24h</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-mono">Prazo de Entrega</div>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <div class="text-3xl font-black font-heading text-emerald-400 mb-1">R$ 0</div>
+                <div class="text-xs text-slate-400 uppercase tracking-wider font-mono">Zero Mensalidades</div>
+            </div>
         </div>
     </header>
 
-    <!-- Hero -->
-    <main class="max-w-5xl mx-auto px-4 py-16 text-center relative z-10 flex-1">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Tecnologia de Ponta Hospedada na Vercel Edge</span>
+    <!-- Services Bento Grid -->
+    <section id="solucoes" class="relative py-24 px-4 max-w-7xl mx-auto z-10">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">O Que Construímos</span>
+            <h2 class="text-3xl sm:text-5xl font-black font-heading text-white mt-4">Soluções Sob Medida</h2>
+            <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mt-3">Tecnologia desenvolvida para converter visitantes em clientes pagantes com rapidez absoluta.</p>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight max-w-3xl mx-auto mb-6 font-heading">
-            Páginas Mobile de Alta Conversão para Negócios Locais em Recife
-        </h1>
-
-        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
-            Estrutura sob medida, carregamento ultrarrápido com CDN no Brasil e botões direto para o WhatsApp para triplicar seus agendamentos e pedidos.
-        </p>
-
-        <!-- Grade de Demonstrações Ativas -->
-        <div class="mt-12 text-left">
-            <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
-                <div>
-                    <h2 class="text-lg font-bold text-white font-heading">Modelos Ativos & Prévias Publicadas</h2>
-                    <p class="text-xs text-slate-400">Clique em qualquer modelo para visualizar a experiência mobile ao vivo.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
-                <span class="text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20 font-mono">
-                    HTTPS / SSL Ativo
-                </span>
+                <h3 class="text-xl font-bold font-heading text-white mb-3">Landing Pages Mobile-First</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Mais de 85% do público compra pelo smartphone. Desenhamos layouts com foco exclusivo em telas de celular, com botões rápidos de compra e navegação fluida.
+                </p>
+                <div class="flex items-center gap-2 text-xs font-mono text-emerald-400">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Otimizado para Bio do Instagram & Google</span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="/barbearia-casa-forte-club-casa-forte.html" class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-scissors"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">Barbearia Casa Forte Club</h3>
-                            <p class="text-xs text-slate-400">Casa Forte, Recife • Barbearia Premium</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 text-xs transition"></i>
-                </a>
+            <!-- Card 2 -->
+            <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
+                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+                <h3 class="text-xl font-bold font-heading text-white mb-3">Infraestrutura em Nuvem Global</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Seu site hospedado diretamente na CDN global da Vercel Edge. Carga instantânea em milissegundos, certificado SSL vitalício e proteção ativa contra quedas.
+                </p>
+                <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Sem custo mensal de servidor</span>
+                </div>
+            </div>
 
-                <a href="/chezz-barbearia-premium-casa-forte.html" class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-mustache"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">Chezz Barbearia Premium</h3>
-                            <p class="text-xs text-slate-400">Casa Forte, Recife • Cuidados Masculinos</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 text-xs transition"></i>
-                </a>
-
-                <a href="/burgonauta-hamburgueria-artesanal-pina.html" class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-burger"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">Burgonauta Hamburgueria</h3>
-                            <p class="text-xs text-slate-400">Pina, Recife • Gastronomia Artesanal</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 text-xs transition"></i>
-                </a>
-
-                <a href="/burguerflash-artesanal-madalena.html" class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-utensils"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">Burguerflash Artesanal</h3>
-                            <p class="text-xs text-slate-400">Madalena, Recife • Smash & Artesanal</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 text-xs transition"></i>
-                </a>
+            <!-- Card 3 -->
+            <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
+                <div class="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                    <i class="fa-solid fa-comments-dollar"></i>
+                </div>
+                <h3 class="text-xl font-bold font-heading text-white mb-3">Funil Direto para WhatsApp</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Botões de agendamento e pedidos integrados que já abrem o WhatsApp do seu negócio com mensagem pré-preenchida, eliminando atrito no fechamento.
+                </p>
+                <div class="flex items-center gap-2 text-xs font-mono text-purple-400">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Rastreamento de cliques e conversões</span>
+                </div>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Live Portfolio Grid -->
+    <section id="portfolio" class="relative py-24 px-4 max-w-7xl mx-auto z-10 border-t border-white/5">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+            <div>
+                <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">Casos Reais</span>
+                <h2 class="text-3xl sm:text-5xl font-black font-heading text-white mt-4">Demonstrações Publicadas</h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-2">Clique em qualquer projeto para abrir a prévia real navegável no ar.</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex items-center gap-2 text-xs font-mono text-slate-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Deploy Ativo na Vercel</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Project 1 -->
+            <a href="/forneria-napolitana-madalena-madalena.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">Gastronomia</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Forneria Napolitana</h3>
+                    <p class="text-xs text-slate-400 mb-4">Página completa com cardápio de pizzas artesanais, fotos do espaço e pedido direto no WhatsApp.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 99%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Project 2 -->
+            <a href="/dr-laser-gracas-gracas.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">Saúde & Estética</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Dr. Laser Estética</h3>
+                    <p class="text-xs text-slate-400 mb-4">Apresentação dos tratamentos de depilação a laser e rejuvenescimento com agendamento imediato de avaliação.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 100%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Project 3 -->
+            <a href="/barbearia-casa-forte-club-casa-forte.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Barbearia Premium</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Casa Forte Club</h3>
+                    <p class="text-xs text-slate-400 mb-4">Tabela de serviços de corte e barba, fotos da bancada e integração de reserva de horários.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 100%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Project 4 -->
+            <a href="/cafeteria-bistro-jardim-secreto-casa-forte.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Café & Bistrô</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Bistrô Jardim Secreto</h3>
+                    <p class="text-xs text-slate-400 mb-4">Ambiente aconchegante, fotos reais dos pratos e cafés especiais com reservas de mesas.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 99%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Project 5 -->
+            <a href="/consultorio-integrado-de-psicologia-bem-estar-derby.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Psicologia & Saúde</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Consultório Bem-Estar</h3>
+                    <p class="text-xs text-slate-400 mb-4">Visual sereno e profissional para atendimento psicológico individual e de casais com agendamento direto.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 100%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Project 6 -->
+            <a href="/texas-smokehouse-burger-boa-viagem-boa-viagem.html" target="_blank" class="glass-card p-6 rounded-2xl group flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">Smokehouse</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-emerald-400 transition text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-white group-hover:text-emerald-400 transition mb-2">Texas Smokehouse</h3>
+                    <p class="text-xs text-slate-400 mb-4">Página com fotos de carnes defumadas e burgers artesanais, horários de atendimento e delivery.</p>
+                </div>
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Performance 99%</span>
+                    <span class="text-emerald-400 font-semibold">Ver Prévia &rarr;</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Process & Founders Section -->
+    <section id="diferenciais" class="relative py-24 px-4 max-w-7xl mx-auto z-10 border-t border-white/5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">Processo Express</span>
+                <h2 class="text-3xl sm:text-5xl font-black font-heading text-white mt-4 leading-tight">Como Tiramos sua Página do Papel em 24h</h2>
+                <p class="text-slate-400 text-base mt-4 mb-8">Sem burocracias, sem contratos longos. Você vê o modelo pronto e navegável antes de qualquer compromisso.</p>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold shrink-0">01</div>
+                        <div>
+                            <h4 class="text-base font-bold text-white mb-1">Mapeamento do Negócio</h4>
+                            <p class="text-sm text-slate-400">Analisamos seu nicho, seus produtos mais vendidos e o perfil do seu público no WhatsApp e Instagram.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center font-mono font-bold shrink-0">02</div>
+                        <div>
+                            <h4 class="text-base font-bold text-white mb-1">Construção da Demonstração 3D & Mobile</h4>
+                            <p class="text-sm text-slate-400">Criamos a página completa em poucas horas com carregamento instantâneo e layout sob medida.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center font-mono font-bold shrink-0">03</div>
+                        <div>
+                            <h4 class="text-base font-bold text-white mb-1">Ativação Definitiva</h4>
+                            <p class="text-sm text-slate-400">Publicamos seu link oficial na Vercel com certificado de segurança e botões de atendimento direto para o seu WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Founder & Studio Badge -->
+            <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-white/10 relative">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-cyan-500 text-white flex items-center justify-center text-3xl font-black mb-6 shadow-xl shadow-emerald-500/20">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-heading text-white mb-2">João Vitor</h3>
+                <p class="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-6">Lead Developer & Criador do Estúdio</p>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">
+                    "Minha missão com a Vitor Web Studio é simples: criar páginas que não apenas pareçam obras de arte no celular, mas que realmente coloquem clientes no WhatsApp da sua empresa todos os dias com zero custo de servidor."
+                </p>
+                <div class="pt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+                    <span>Tecnologias: React, Tailwind, Three.js, Vercel</span>
+                    <span class="text-emerald-400 font-bold">&check; Verificado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="relative py-24 px-4 max-w-4xl mx-auto z-10 border-t border-white/5">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">Tire Suas Dúvidas</span>
+            <h2 class="text-3xl sm:text-5xl font-black font-heading text-white mt-4">Perguntas Frequentes</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="glass-card p-6 rounded-2xl">
+                <h4 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                    <span>Preciso pagar mensalidade de hospedagem todo mês?</span>
+                    <i class="fa-solid fa-circle-question text-emerald-400"></i>
+                </h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Não! Desenvolvemos os projetos para rodar na infraestrutura Edge da Vercel. O link oficial fica no ar 24h por dia com certificado de segurança SSL vitalício e zero custo de hospedagem mensal para você.
+                </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl">
+                <h4 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                    <span>Posso usar meu próprio domínio (.com.br)?</span>
+                    <i class="fa-solid fa-circle-question text-cyan-400"></i>
+                </h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Sim! O site já é entregue pronto com link oficial rápido. Caso você já tenha ou deseje registrar um domínio próprio (.com.br), conectamos tudo para você sem complicação técnica.
+                </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl">
+                <h4 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+                    <span>Como os clientes entram em contato?</span>
+                    <i class="fa-solid fa-circle-question text-purple-400"></i>
+                </h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Direto no seu WhatsApp! A página possui botões flutuantes e fixos configurados com o seu número de atendimento, permitindo que o cliente faça pedidos ou agendamentos com apenas um toque na tela.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA Card -->
+    <section class="relative py-20 px-4 max-w-5xl mx-auto z-10 text-center">
+        <div class="glass-panel p-10 sm:p-16 rounded-3xl border border-emerald-500/30 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <h2 class="text-3xl sm:text-5xl font-black font-heading text-white tracking-tight mb-4">
+                Pronto para colocar sua empresa em outro nível?
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 font-light">
+                Solicite uma demonstração exclusiva sem custo e veja como sua página fica ao vivo no celular.
+            </p>
+            <a href="https://wa.me/19709963816?text=Ol%C3%A1%20Jo%C3%A3o%20Vitor!%20Gostaria%20de%20iniciar%20minha%20p%C3%A1gina%20com%20a%20Vitor%20Web%20Studio." target="_blank" class="glow-btn inline-flex items-center gap-3 px-8 py-4 rounded-xl text-white text-base font-bold">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                <span>Conversar com João Vitor no WhatsApp</span>
+            </a>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        <p>© 2026 Studio Web Recife • Desenvolvido por João Vitor • Recife - PE</p>
+    <footer class="border-t border-white/5 py-10 relative z-10 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-300 font-heading">Vitor Web Studio</span>
+                <span>&bull; Criado por João Vitor</span>
+            </div>
+            <p>© 2026 Vitor Web Studio. Todos os direitos reservados. Hospedado na Vercel Edge.</p>
+        </div>
     </footer>
 
+    <!-- Three.js Interactive 3D Background Script -->
+    <script>
+        const canvas = document.getElementById('canvas3d');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Create Particles Wave / Mesh
+        const particlesCount = 1800;
+        const positions = new Float32Array(particlesCount * 3);
+        const colors = new Float32Array(particlesCount * 3);
+
+        const color1 = new THREE.Color('#10b981'); // Emerald
+        const color2 = new THREE.Color('#06b6d4'); // Cyan
+        const color3 = new THREE.Color('#8b5cf6'); // Purple
+
+        for (let i = 0; i < particlesCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 18;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 18;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 18;
+
+            const mixedColor = color1.clone().lerp(color2, Math.random()).lerp(color3, Math.random() * 0.3);
+            colors[i * 3] = mixedColor.r;
+            colors[i * 3 + 1] = mixedColor.g;
+            colors[i * 3 + 2] = mixedColor.b;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.045,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.75,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(geometry, material);
+        scene.add(particlesMesh);
+
+        // 3D Geometric Torus Wireframe Ring
+        const torusGeo = new THREE.TorusKnotGeometry(3.5, 0.8, 120, 18, 2, 3);
+        const torusMat = new THREE.MeshBasicMaterial({
+            color: '#10b981',
+            wireframe: true,
+            transparent: true,
+            opacity: 0.12
+        });
+        const torus = new THREE.Mesh(torusGeo, torusMat);
+        torus.position.set(0, 0, -4);
+        scene.add(torus);
+
+        camera.position.z = 7;
+
+        // Mouse Interactivity
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0012;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0012;
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 2.5;
+            targetY = mouseY * 2.5;
+
+            particlesMesh.rotation.y = elapsedTime * 0.05 + targetX;
+            particlesMesh.rotation.x = elapsedTime * 0.03 + targetY;
+
+            torus.rotation.x = elapsedTime * 0.15 + targetY;
+            torus.rotation.y = elapsedTime * 0.12 + targetX;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Responsive Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+    </script>
 </body>
 </html>
