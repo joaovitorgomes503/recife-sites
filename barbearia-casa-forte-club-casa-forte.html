@@ -45,6 +45,20 @@
         @keyframes textShine {
             to { background-position: 200% center; }
         }
+
+        /* Marquee Ticker */
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marqueeScroll 24s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-28 md:pb-0 relative overflow-x-hidden">
@@ -133,21 +147,51 @@
         </div>
     </section>
 
+    <!-- Marquee Banner de Destaques -->
+    <div class="relative overflow-hidden py-3.5 bg-slate-900 text-slate-300 text-xs font-semibold border-y border-slate-800 shadow-inner">
+        <div class="animate-marquee flex items-center gap-8 whitespace-nowrap">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-star text-amber-400"></i> Avaliação 4.9 no Google</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400"></i> Agendamento Imediato no WhatsApp</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-rose-400"></i> Localização Nobre em Casa Forte</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Atendimento Seguro e Confortável</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-sky-400"></i> Horários Marcados com Pontualidade</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-star text-amber-400"></i> Avaliação 4.9 no Google</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400"></i> Agendamento Imediato no WhatsApp</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-rose-400"></i> Localização Nobre em Casa Forte</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Atendimento Seguro e Confortável</span>
+        </div>
+    </div>
+
     <!-- Services Section (Bento Grid) -->
     <section id="servicos" class="py-16 px-4 bg-slate-100/70 border-y border-slate-200/60 relative">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center max-w-xl mx-auto mb-12">
+            <div class="text-center max-w-xl mx-auto mb-8">
                 <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Especialidades & Soluções</span>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-1 mb-3 font-heading">Nossos Principais Serviços</h2>
                 <p class="text-slate-600 text-sm">Estrutura de ponta e equipe capacitada para proporcionar a melhor experiência.</p>
             </div>
+
+            <!-- Quick Category Filters -->
+            <div class="flex items-center justify-center gap-2 mb-8 flex-wrap">
+                <button type="button" onclick="filterServices('all', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition">Todos os Serviços</button>
+                <button type="button" onclick="filterServices('popular', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Mais Procurados</button>
+                <button type="button" onclick="filterServices('exclusive', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Diferenciais</button>
+            </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-        <div class="group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-5">
-                    <div class="w-13 h-13 w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
                         <i class="fa-solid fa-scissors"></i>
                     </div>
                     <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
@@ -168,10 +212,10 @@
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-5">
-                    <div class="w-13 h-13 w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
                         <i class="fa-solid fa-spray-can-sparkles"></i>
                     </div>
                     <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
@@ -192,10 +236,10 @@
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-5">
-                    <div class="w-13 h-13 w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
                         <i class="fa-solid fa-paintbrush"></i>
                     </div>
                     <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
@@ -216,10 +260,10 @@
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-5">
-                    <div class="w-13 h-13 w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
                         <i class="fa-solid fa-crown"></i>
                     </div>
                     <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
@@ -364,7 +408,11 @@
                 </p>
             </div>
 
-            <div class="w-full sm:w-auto relative z-10 flex flex-col gap-3">
+            <div class="w-full sm:w-auto relative z-10 flex flex-col sm:flex-row gap-3">
+                <a href="https://www.google.com/maps/search/?api=1&query=Rua%20do%20Chacon%2C%20164%20-%20Po%C3%A7o%20da%20Panela%2C%20Casa%20Forte%2C%20Recife%20-%20PE" target="_blank" class="inline-flex items-center justify-center gap-2 bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold px-6 py-4 rounded-2xl text-sm border border-slate-700 shadow transition">
+                    <i class="fa-solid fa-map-location-dot text-rose-400 text-base"></i>
+                    <span>Ver no Google Maps</span>
+                </a>
                 <a href="https://wa.me/5581992279526?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Barbearia%20Casa%20Forte%20Club%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-8 py-4 rounded-2xl text-base shadow-lg shadow-emerald-500/30 hover:scale-[1.03] transition animate-wa-ripple">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
                     <span>Conversar no WhatsApp</span>
@@ -383,9 +431,9 @@
     </footer>
 
     <!-- Floating Live Social Proof Toast -->
-    <div class="hidden sm:flex fixed bottom-6 left-6 z-40 bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl px-4 py-3 items-center gap-3 text-xs text-slate-700 animate-fade">
+    <div id="social-proof-toast" class="hidden sm:flex fixed bottom-6 left-6 z-40 bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl px-4 py-3 items-center gap-3 text-xs text-slate-700 transition-all duration-300">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>🔥 <strong>3 atendimentos</strong> agendados hoje em Casa Forte</span>
+        <span id="toast-text">🔥 <strong>3 atendimentos</strong> agendados hoje em Casa Forte</span>
     </div>
 
     <!-- Sticky Floating Mobile WhatsApp Bar -->
@@ -397,5 +445,52 @@
         </a>
     </div>
 
+    <!-- Client-side Interactive Enhancement Scripts -->
+    <script>
+        function filterServices(cat, btn) {
+            const cards = document.querySelectorAll('.service-card');
+            const tabs = document.querySelectorAll('.svc-tab');
+            tabs.forEach(t => {
+                t.classList.remove('bg-slate-900', 'text-white');
+                t.classList.add('bg-white', 'text-slate-700');
+            });
+            if (btn) {
+                btn.classList.remove('bg-white', 'text-slate-700');
+                btn.classList.add('bg-slate-900', 'text-white');
+            }
+
+            cards.forEach((card, idx) => {
+                if (cat === 'all') {
+                    card.style.display = 'flex';
+                } else if (cat === 'popular') {
+                    card.style.display = (idx % 2 === 0) ? 'flex' : 'none';
+                } else {
+                    card.style.display = (idx % 2 === 1) ? 'flex' : 'none';
+                }
+            });
+        }
+
+        const toastMsgs = [
+            '🔥 <strong>3 atendimentos</strong> agendados hoje em Casa Forte',
+            '⭐ <strong>Avaliação 5 estrelas</strong> recebida no Google há 2 horas',
+            '⚡ <strong>Horários para amanhã</strong> disponíveis para reserva',
+            '💬 <strong>Resposta rápida</strong> garantida pelo WhatsApp'
+        ];
+        let toastIdx = 0;
+        setInterval(() => {
+            const toastEl = document.getElementById('social-proof-toast');
+            const textEl = document.getElementById('toast-text');
+            if (toastEl && textEl) {
+                toastEl.style.opacity = '0';
+                toastEl.style.transform = 'translateY(6px)';
+                setTimeout(() => {
+                    toastIdx = (toastIdx + 1) % toastMsgs.length;
+                    textEl.innerHTML = toastMsgs[toastIdx];
+                    toastEl.style.opacity = '1';
+                    toastEl.style.transform = 'translateY(0)';
+                }, 300);
+            }
+        }, 6000);
+    </script>
 </body>
 </html>
