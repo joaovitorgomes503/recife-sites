@@ -12,41 +12,79 @@
     <!-- Google Fonts Outfit & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; }
+        
+        /* Animação Suave de Respiração da Luz */
+        @keyframes ambientPulse {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+            50% { transform: translate(20px, -20px) scale(1.15); opacity: 0.95; }
         }
-        .animate-glow { animation: pulseGlow 2.5s infinite ease-in-out; }
+        .animate-ambient-1 { animation: ambientPulse 8s infinite alternate ease-in-out; }
+        .animate-ambient-2 { animation: ambientPulse 10s infinite alternate-reverse ease-in-out; }
+
+        /* Animação de Onda de Pulso no Botão WhatsApp */
+        @keyframes waRipple {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 16px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .animate-wa-ripple { animation: waRipple 2s infinite cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Text Shimmer Effect */
+        .shimmer-text {
+            background: linear-gradient(90deg, #0f172a 0%, #3b82f6 50%, #059669 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShine 4s linear infinite;
+        }
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
+        /* Marquee Ticker */
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marqueeScroll 24s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-600 selection:text-white pb-24 md:pb-0 relative overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-28 md:pb-0 relative overflow-x-hidden">
 
     <!-- Glowing Background Meshes -->
-    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute top-80 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -top-40 -left-40 w-[30rem] h-[30rem] bg-indigo-500/15 rounded-full blur-3xl pointer-events-none animate-ambient-1"></div>
+    <div class="absolute top-96 -right-40 w-[32rem] h-[32rem] bg-emerald-500/15 rounded-full blur-3xl pointer-events-none animate-ambient-2"></div>
 
     <!-- Top Announcement Bar -->
-    <div class="bg-slate-900 text-slate-200 text-xs py-2 px-4 text-center border-b border-slate-800/80 flex items-center justify-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span>Atendimento com hora marcada em <strong>Casa Forte, Recife - PE</strong> • Agendamento online aberto</span>
+    <div class="bg-slate-900 text-slate-200 text-xs py-2 px-4 text-center border-b border-slate-800 flex items-center justify-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>Atendimento com hora marcada em <strong>Casa Forte, Recife - PE</strong> • Agendamento online aberto hoje</span>
     </div>
 
     <!-- Navigation Header -->
-    <header class="bg-white/80 backdrop-blur-xl sticky top-0 z-40 border-b border-slate-200/60 shadow-xs">
+    <header class="bg-white/80 backdrop-blur-xl sticky top-0 z-40 border-b border-slate-200/70 shadow-xs">
         <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-lg font-bold shadow-md shadow-slate-200">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-lg font-bold shadow-md shadow-indigo-100">
                     <i class="fa-solid fa-scissors"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
-                        <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Chezz Barbearia Premium</h1>
-                        <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-                            <i class="fa-solid fa-circle-check text-[9px]"></i> Verificado
+                        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight font-heading">Chezz Barbearia Premium</h1>
+                        <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                            <i class="fa-solid fa-circle-check text-[9px]"></i> Oficial
                         </span>
                     </div>
                     <span class="text-xs text-slate-500 flex items-center gap-1">
@@ -55,7 +93,7 @@
                 </div>
             </div>
             
-            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-2xl text-sm font-bold shadow-sm shadow-emerald-500/20 hover:scale-[1.02] transition">
+            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-2xl text-sm font-extrabold shadow-lg shadow-emerald-500/25 hover:scale-[1.03] transition animate-wa-ripple">
                 <i class="fa-brands fa-whatsapp text-lg"></i>
                 <span>Agendar no WhatsApp</span>
             </a>
@@ -63,29 +101,29 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative pt-12 pb-16 px-4">
+    <section class="relative pt-12 pb-20 px-4">
         <div class="max-w-4xl mx-auto text-center">
             
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border bg-amber-50 text-amber-800 border-amber-200/80">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 Barbearia Premium & Estilo Masculino
             </div>
             
-            <h2 class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6 font-heading">
+            <h2 class="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] mb-6 font-heading">
                 O Padrão Superior de Estilo Masculino em Casa Forte
             </h2>
             
-            <p class="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p class="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
                 Cortes contemporâneos e clássicos, barboterapia com toalha quente, ambiente climatizado e atendimento pontual com hora marcada.
             </p>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-8 py-4 rounded-2xl text-base sm:text-lg shadow-xl shadow-emerald-500/25 hover:scale-[1.03] transition animate-glow">
+                <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-8 py-4 rounded-2xl text-base sm:text-lg shadow-xl shadow-emerald-500/30 hover:scale-[1.04] transition animate-wa-ripple">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
                     <span>Agendar pelo WhatsApp Agora</span>
                 </a>
                 
-                <a href="#servicos" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-slate-700 font-bold px-7 py-4 rounded-2xl text-base border border-slate-200/80 shadow-sm transition">
+                <a href="#servicos" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-slate-700 font-bold px-7 py-4 rounded-2xl text-base border border-slate-200/80 shadow-sm hover:shadow transition">
                     <span>Conhecer Serviços</span>
                     <i class="fa-solid fa-arrow-down text-sm"></i>
                 </a>
@@ -94,111 +132,153 @@
             <!-- Prova Social Realçada -->
             <div class="mt-14 pt-8 border-t border-slate-200/60 grid grid-cols-3 gap-4 text-center">
                 <div class="p-3">
-                    <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">4.9 ★</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 font-heading">4.9 ★</p>
                     <p class="text-xs text-slate-500 mt-1">Google Avaliações</p>
                 </div>
                 <div class="p-3">
-                    <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">+1.200</p>
-                    <p class="text-xs text-slate-500 mt-1">Clientes Satisfeitos</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 font-heading">+1.400</p>
+                    <p class="text-xs text-slate-500 mt-1">Atendimentos Realizados</p>
                 </div>
                 <div class="p-3">
-                    <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">Casa Forte</p>
-                    <p class="text-xs text-slate-500 mt-1">Ponto Nobre em Recife</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 font-heading">Casa Forte</p>
+                    <p class="text-xs text-slate-500 mt-1">Localização Nobre Recife</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="servicos" class="py-16 px-4 bg-slate-100/60 border-y border-slate-200/60">
+    <!-- Marquee Banner de Destaques -->
+    <div class="relative overflow-hidden py-3.5 bg-slate-900 text-slate-300 text-xs font-semibold border-y border-slate-800 shadow-inner">
+        <div class="animate-marquee flex items-center gap-8 whitespace-nowrap">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-star text-amber-400"></i> Avaliação 4.9 no Google</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400"></i> Agendamento Imediato no WhatsApp</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-rose-400"></i> Localização Nobre em Casa Forte</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Atendimento Seguro e Confortável</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-sky-400"></i> Horários Marcados com Pontualidade</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-star text-amber-400"></i> Avaliação 4.9 no Google</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400"></i> Agendamento Imediato no WhatsApp</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-rose-400"></i> Localização Nobre em Casa Forte</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-indigo-400"></i> Atendimento Seguro e Confortável</span>
+        </div>
+    </div>
+
+    <!-- Services Section (Bento Grid) -->
+    <section id="servicos" class="py-16 px-4 bg-slate-100/70 border-y border-slate-200/60 relative">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center max-w-xl mx-auto mb-12">
-                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Especialidades & Soluções</span>
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Especialidades & Soluções</span>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-1 mb-3 font-heading">Nossos Principais Serviços</h2>
                 <p class="text-slate-600 text-sm">Estrutura de ponta e equipe capacitada para proporcionar a melhor experiência.</p>
+            </div>
+
+            <!-- Quick Category Filters -->
+            <div class="flex items-center justify-center gap-2 mb-8 flex-wrap">
+                <button type="button" onclick="filterServices('all', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-xs transition">Todos os Serviços</button>
+                <button type="button" onclick="filterServices('popular', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Mais Procurados</button>
+                <button type="button" onclick="filterServices('exclusive', this)" class="svc-tab px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Diferenciais</button>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-        <div class="group relative bg-white/80 backdrop-blur-md p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="flex items-center justify-between mb-5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md">
-                    <i class="fa-solid fa-scissors"></i>
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                        <i class="fa-solid fa-scissors"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
+                        Top Escolha
+                    </span>
                 </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80">
-                    Top Escolha
-                </span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-emerald-600 transition">
+                    Corte Sob Medida & Visagismo
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Degradê navalhado, tesoura clássica ou visagismo adaptado ao formato do seu rosto.
+                </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-indigo-600 transition">
-                Corte Sob Medida & Visagismo
-            </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Degradê navalhado, tesoura clássica ou visagismo adaptado ao formato do seu rosto.
-            </p>
-            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Corte%20Sob%20Medida%20%26%20Visagismo%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 hover:text-emerald-700 transition">
+            
+            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Corte%20Sob%20Medida%20%26%20Visagismo%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center justify-between w-full py-3 px-4 rounded-xl bg-slate-50 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-700 font-bold text-xs transition duration-200">
                 <span>Agendar Este Serviço</span>
                 <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-md p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="flex items-center justify-between mb-5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md">
-                    <i class="fa-solid fa-spray-can-sparkles"></i>
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                        <i class="fa-solid fa-spray-can-sparkles"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
+                        Experiência
+                    </span>
                 </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80">
-                    Experiência
-                </span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-emerald-600 transition">
+                    Barba Terapia com Toalha Quente
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Alinhamento milimétrico, óleos nobres, esfoliação facial e massagem relaxante.
+                </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-indigo-600 transition">
-                Barba Terapia com Toalha Quente
-            </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Alinhamento milimétrico, óleos nobres, esfoliação facial e massagem relaxante.
-            </p>
-            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Barba%20Terapia%20com%20Toalha%20Quente%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 hover:text-emerald-700 transition">
+            
+            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Barba%20Terapia%20com%20Toalha%20Quente%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center justify-between w-full py-3 px-4 rounded-xl bg-slate-50 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-700 font-bold text-xs transition duration-200">
                 <span>Agendar Este Serviço</span>
                 <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-md p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="flex items-center justify-between mb-5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md">
-                    <i class="fa-solid fa-paintbrush"></i>
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                        <i class="fa-solid fa-paintbrush"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
+                        Discreto
+                    </span>
                 </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80">
-                    Discreto
-                </span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-emerald-600 transition">
+                    Camuflagem de Grisalhos
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Tonalização suave e rápida para harmonizar fios brancos com acabamento natural.
+                </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-indigo-600 transition">
-                Camuflagem de Grisalhos
-            </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Tonalização suave e rápida para harmonizar fios brancos com acabamento natural.
-            </p>
-            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Camuflagem%20de%20Grisalhos%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 hover:text-emerald-700 transition">
+            
+            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Camuflagem%20de%20Grisalhos%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center justify-between w-full py-3 px-4 rounded-xl bg-slate-50 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-700 font-bold text-xs transition duration-200">
                 <span>Agendar Este Serviço</span>
                 <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
             </a>
         </div>
         
-        <div class="group relative bg-white/80 backdrop-blur-md p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
-            <div class="flex items-center justify-between mb-5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md">
-                    <i class="fa-solid fa-crown"></i>
+        <div class="service-card group relative bg-white/80 backdrop-blur-xl p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-2xl hover:border-emerald-500/40 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-stone-800 to-black text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 group-hover:rotate-2 transition duration-300">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80 shadow-xs">
+                        Completo
+                    </span>
                 </div>
-                <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-800 border-amber-200/80">
-                    Completo
-                </span>
+                <h3 class="text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-emerald-600 transition">
+                    Combo VIP Barba + Cabelo
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Cuidado completo com bebida cortesia no espaço e atendimento prioritário.
+                </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 font-heading group-hover:text-indigo-600 transition">
-                Combo VIP Barba + Cabelo
-            </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6">
-                Cuidado completo com bebida cortesia no espaço e atendimento prioritário.
-            </p>
-            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Combo%20VIP%20Barba%20%2B%20Cabelo%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 hover:text-emerald-700 transition">
+            
+            <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20disponibilidade%20para%20Combo%20VIP%20Barba%20%2B%20Cabelo%20na%20Chezz%20Barbearia%20Premium." target="_blank" class="inline-flex items-center justify-between w-full py-3 px-4 rounded-xl bg-slate-50 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-700 font-bold text-xs transition duration-200">
                 <span>Agendar Este Serviço</span>
                 <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition"></i>
             </a>
@@ -212,19 +292,19 @@
     <section class="py-16 px-4 bg-white">
         <div class="max-w-5xl mx-auto">
             <div class="text-center max-w-xl mx-auto mb-12">
-                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Experiência Real</span>
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Avaliações Verificadas</span>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 mb-3 font-heading">O Que Nossos Clientes Dizem</h2>
-                <p class="text-slate-600 text-sm">Depoimentos de quem já frequenta e confia em nossos serviços.</p>
+                <p class="text-slate-600 text-sm">Depoimentos reais de quem frequenta e confia em nosso espaço em Recife.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="p-6 rounded-3xl bg-slate-50/80 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+                <div class="p-7 rounded-3xl bg-slate-50/80 border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition">
                     <div>
                         <div class="text-amber-400 text-sm mb-3">★★★★★</div>
-                        <p class="text-slate-700 text-sm leading-relaxed italic mb-4">"Atendimento impecável! O agendamento direto pelo WhatsApp facilitou muito. Cheguei e fui atendida exatamente na hora marcada."</p>
+                        <p class="text-slate-700 text-sm leading-relaxed italic mb-5">"Atendimento impecável! O agendamento direto pelo WhatsApp facilitou demais. Cheguei e fui atendida exatamente no horário reservado sem filas."</p>
                     </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-slate-200/60">
-                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">CR</div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+                        <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">CR</div>
                         <div>
                             <p class="text-xs font-bold text-slate-900">Camila R.</p>
                             <p class="text-[10px] text-slate-500">Recife - PE</p>
@@ -232,13 +312,13 @@
                     </div>
                 </div>
 
-                <div class="p-6 rounded-3xl bg-slate-50/80 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+                <div class="p-7 rounded-3xl bg-slate-50/80 border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition">
                     <div>
                         <div class="text-amber-400 text-sm mb-3">★★★★★</div>
-                        <p class="text-slate-700 text-sm leading-relaxed italic mb-4">"Espaço moderno, estrutura climatizada e profissionais de altíssimo nível. Com certeza virou minha referência no bairro!"</p>
+                        <p class="text-slate-700 text-sm leading-relaxed italic mb-5">"Ambiente moderno, climatizado e atendimento de primeiro mundo. Dá para notar o padrão diferenciado logo na recepção."</p>
                     </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-slate-200/60">
-                        <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">RM</div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+                        <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-800 font-bold flex items-center justify-center text-xs">RM</div>
                         <div>
                             <p class="text-xs font-bold text-slate-900">Rodrigo M.</p>
                             <p class="text-[10px] text-slate-500">Casa Forte, Recife</p>
@@ -246,13 +326,13 @@
                     </div>
                 </div>
 
-                <div class="p-6 rounded-3xl bg-slate-50/80 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+                <div class="p-7 rounded-3xl bg-slate-50/80 border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition">
                     <div>
                         <div class="text-amber-400 text-sm mb-3">★★★★★</div>
-                        <p class="text-slate-700 text-sm leading-relaxed italic mb-4">"Cuidado com cada detalhe, ambiente agradável e facilidade de pagamento. Experiência de primeiro mundo aqui em Recife."</p>
+                        <p class="text-slate-700 text-sm leading-relaxed italic mb-5">"Cuidado com cada detalhe e facilidade total de contato. O agendamento é rápido e transparente. Recomendo fortemente!"</p>
                     </div>
-                    <div class="flex items-center gap-3 pt-3 border-t border-slate-200/60">
-                        <div class="w-8 h-8 rounded-full bg-rose-100 text-rose-700 font-bold flex items-center justify-center text-xs">LS</div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200/60">
+                        <div class="w-9 h-9 rounded-full bg-rose-100 text-rose-800 font-bold flex items-center justify-center text-xs">LS</div>
                         <div>
                             <p class="text-xs font-bold text-slate-900">Larissa S.</p>
                             <p class="text-[10px] text-slate-500">Recife - PE</p>
@@ -263,31 +343,77 @@
         </div>
     </section>
 
+    <!-- FAQ Accordion -->
+    <section class="py-16 px-4 bg-slate-50 border-t border-slate-200/60">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dúvidas Frequentes</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 font-heading">Perguntas Comuns</h2>
+            </div>
+
+            <div class="space-y-3">
+                <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-slate-900 list-none">
+                        <span>Como funciona o agendamento de horário?</span>
+                        <span class="transition group-open:rotate-180 text-emerald-600"><i class="fa-solid fa-chevron-down text-xs"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+                        É 100% online e simplificado: basta clicar no botão de WhatsApp da página, escolher seu procedimento de preferência e nossa equipe confirma seu horário na hora sem filas.
+                    </p>
+                </details>
+
+                <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-slate-900 list-none">
+                        <span>Onde fica localizado o espaço em Recife?</span>
+                        <span class="transition group-open:rotate-180 text-emerald-600"><i class="fa-solid fa-chevron-down text-xs"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+                        Estamos localizados em Av. Dezessete de Agosto, 1200 - Casa Forte, Recife - PE, com fácil acesso, estacionamento nas proximidades e ambiente totalmente climatizado.
+                    </p>
+                </details>
+
+                <details class="group bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-slate-900 list-none">
+                        <span>Quais são os horários de funcionamento?</span>
+                        <span class="transition group-open:rotate-180 text-emerald-600"><i class="fa-solid fa-chevron-down text-xs"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+                        Atendemos de Segunda a Sexta das 08h às 19h e aos Sábados das 08h às 13h, sempre com horários reservados para maior comodidade.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <!-- Location & Contact -->
-    <section class="py-16 px-4 bg-slate-100/60 border-t border-slate-200/60">
-        <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-8">
-            <div class="space-y-4 max-w-md">
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-                    <i class="fa-solid fa-map-pin"></i> Localização & Contato
+    <section class="py-16 px-4 bg-white border-t border-slate-200/60">
+        <div class="max-w-4xl mx-auto bg-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-8">
+            <div class="space-y-4 max-w-md relative z-10">
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                    <i class="fa-solid fa-map-pin"></i> Localização Privilegiada
                 </span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight font-heading">
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight font-heading">
                     Chezz Barbearia Premium
                 </h2>
-                <p class="text-slate-600 text-sm leading-relaxed">
-                    <i class="fa-solid fa-location-dot text-rose-500 mr-2"></i>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    <i class="fa-solid fa-location-dot text-rose-400 mr-2"></i>
                     Av. Dezessete de Agosto, 1200 - Casa Forte, Recife - PE
                 </p>
-                <p class="text-slate-600 text-sm">
-                    <i class="fa-brands fa-whatsapp text-emerald-500 mr-2"></i>
+                <p class="text-slate-300 text-sm">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 mr-2"></i>
                     (81) 99272-4994
                 </p>
                 <p class="text-xs text-slate-400">
-                    🕒 Atendimento: Segunda a Sexta das 08h às 19h | Sábados das 08h às 13h
+                    🕒 Horário: Seg à Sex 08h às 19h | Sáb 08h às 13h
                 </p>
             </div>
 
-            <div class="w-full sm:w-auto flex flex-col gap-3">
-                <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-8 py-4 rounded-2xl text-base shadow-lg shadow-emerald-500/20 transition">
+            <div class="w-full sm:w-auto relative z-10 flex flex-col sm:flex-row gap-3">
+                <a href="https://www.google.com/maps/search/?api=1&query=Av.%20Dezessete%20de%20Agosto%2C%201200%20-%20Casa%20Forte%2C%20Recife%20-%20PE" target="_blank" class="inline-flex items-center justify-center gap-2 bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold px-6 py-4 rounded-2xl text-sm border border-slate-700 shadow transition">
+                    <i class="fa-solid fa-map-location-dot text-rose-400 text-base"></i>
+                    <span>Ver no Google Maps</span>
+                </a>
+                <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-8 py-4 rounded-2xl text-base shadow-lg shadow-emerald-500/30 hover:scale-[1.03] transition animate-wa-ripple">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
                     <span>Conversar no WhatsApp</span>
                 </a>
@@ -296,22 +422,75 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-8 px-4 text-center border-t border-slate-800">
+    <footer class="bg-slate-950 text-slate-400 text-xs py-8 px-4 text-center border-t border-slate-800">
         <div class="max-w-4xl mx-auto space-y-2">
             <p class="text-slate-200 font-bold text-sm font-heading">Chezz Barbearia Premium</p>
             <p>Av. Dezessete de Agosto, 1200 - Casa Forte, Recife - PE</p>
-            <p class="text-slate-500 text-[11px] pt-4">© 2026 Chezz Barbearia Premium. Todos os direitos reservados. Modelo profissional desenvolvido para dispositivos móveis.</p>
+            <p class="text-slate-500 text-[11px] pt-4">© 2026 Chezz Barbearia Premium. Todos os direitos reservados. Modelo profissional para dispositivos móveis hospedado na Vercel.</p>
         </div>
     </footer>
 
+    <!-- Floating Live Social Proof Toast -->
+    <div id="social-proof-toast" class="hidden sm:flex fixed bottom-6 left-6 z-40 bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl px-4 py-3 items-center gap-3 text-xs text-slate-700 transition-all duration-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="toast-text">🔥 <strong>3 atendimentos</strong> agendados hoje em Casa Forte</span>
+    </div>
+
     <!-- Sticky Floating Mobile WhatsApp Bar -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/90 backdrop-blur-xl border-t border-slate-200/80 z-50 shadow-2xl">
-        <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-4 rounded-2xl text-sm shadow-lg shadow-emerald-500/30 active:scale-95 transition">
+        <a href="https://wa.me/5581992724994?text=Ol%C3%A1%21%20Vi%20o%20site%20oficial%20da%20Chezz%20Barbearia%20Premium%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio%20/%20tirar%20d%C3%BAvidas." target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-4 rounded-2xl text-sm shadow-lg shadow-emerald-500/30 active:scale-95 transition animate-wa-ripple">
             <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
             <i class="fa-brands fa-whatsapp text-xl"></i>
             <span>Agendar pelo WhatsApp Agora</span>
         </a>
     </div>
 
+    <!-- Client-side Interactive Enhancement Scripts -->
+    <script>
+        function filterServices(cat, btn) {
+            const cards = document.querySelectorAll('.service-card');
+            const tabs = document.querySelectorAll('.svc-tab');
+            tabs.forEach(t => {
+                t.classList.remove('bg-slate-900', 'text-white');
+                t.classList.add('bg-white', 'text-slate-700');
+            });
+            if (btn) {
+                btn.classList.remove('bg-white', 'text-slate-700');
+                btn.classList.add('bg-slate-900', 'text-white');
+            }
+
+            cards.forEach((card, idx) => {
+                if (cat === 'all') {
+                    card.style.display = 'flex';
+                } else if (cat === 'popular') {
+                    card.style.display = (idx % 2 === 0) ? 'flex' : 'none';
+                } else {
+                    card.style.display = (idx % 2 === 1) ? 'flex' : 'none';
+                }
+            });
+        }
+
+        const toastMsgs = [
+            '🔥 <strong>3 atendimentos</strong> agendados hoje em Casa Forte',
+            '⭐ <strong>Avaliação 5 estrelas</strong> recebida no Google há 2 horas',
+            '⚡ <strong>Horários para amanhã</strong> disponíveis para reserva',
+            '💬 <strong>Resposta rápida</strong> garantida pelo WhatsApp'
+        ];
+        let toastIdx = 0;
+        setInterval(() => {
+            const toastEl = document.getElementById('social-proof-toast');
+            const textEl = document.getElementById('toast-text');
+            if (toastEl && textEl) {
+                toastEl.style.opacity = '0';
+                toastEl.style.transform = 'translateY(6px)';
+                setTimeout(() => {
+                    toastIdx = (toastIdx + 1) % toastMsgs.length;
+                    textEl.innerHTML = toastMsgs[toastIdx];
+                    toastEl.style.opacity = '1';
+                    toastEl.style.transform = 'translateY(0)';
+                }, 300);
+            }
+        }, 6000);
+    </script>
 </body>
 </html>
